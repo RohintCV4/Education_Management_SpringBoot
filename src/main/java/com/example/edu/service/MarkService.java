@@ -78,9 +78,9 @@ public class MarkService {
 		return markRepository.save(mark);
 	}
 
-	public Mark createMark(final Mark mark) {
-		return this.markRepository.save(mark);
-	}
+//	public Mark createMark(final Mark mark) {
+//		return this.markRepository.save(mark);
+//	}
 
 	public Map<String, Object> deleteMark(Long id) {
 		boolean exists = markRepository.existsById(id);
