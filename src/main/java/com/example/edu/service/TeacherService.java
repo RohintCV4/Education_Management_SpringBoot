@@ -1,6 +1,7 @@
 package com.example.edu.service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.edu.entity.Salary;
+import com.example.edu.entity.Student;
 import com.example.edu.entity.Teacher;
 import com.example.edu.repository.SalaryRepository;
+import com.example.edu.repository.StudentRepository;
 import com.example.edu.repository.TeacherRepository;
 
 @Service
@@ -21,6 +24,8 @@ public class TeacherService {
 	private TeacherRepository teacherRepository;
 	@Autowired
 	private SalaryRepository salaryRepository;
+	@Autowired
+	private StudentRepository studentRepository;
 	public Teacher createTeacher(final Teacher teacher) {
 		return this.teacherRepository.save(teacher);
 	}
@@ -29,26 +34,46 @@ public class TeacherService {
 //		Long teacid= teacher.getId();
 //		Long salid=teacher.getSalary().getId();
 		
-		  public List<Map<String, Object>> retrieveTeacher() {
-		        List<Teacher> teachers = teacherRepository.findAll();
-		        return teachers.stream().map(teacher -> {
-		            Map<String, Object> teacherMap = new HashMap<>();
-		            teacherMap.put("Teacher Id", teacher.getId());
-		            teacherMap.put("Teacher Name", teacher.getName());
+	public List<Map<String, Object>> retrieveTeacher() {
+		List<Teacher> teachers = teacherRepository.findAll();
+		return teachers.stream().map(teacher -> {
+			Map<String, Object> teacherMap = new LinkedHashMap<>();
+		    teacherMap.put("Teacher Id", teacher.getId());
+		    teacherMap.put("Teacher Name", teacher.getName());
 
-		            if (teacher.getSalary() != null) {
-		                teacherMap.put("Salary Id", teacher.getSalary().getId());
-		                teacherMap.put("Salary Amount", teacher.getSalary().getAmount());
+		    if (teacher.getSalary() != null) {
+		    	teacherMap.put("Salary Id", teacher.getSalary().getId());
+		        teacherMap.put("Salary Amount", teacher.getSalary().getAmount());
 
-		                if (teacher.getSalary().getCourse() != null) {
-		                    teacherMap.put("Course Id", teacher.getSalary().getCourse().getId());
-		                    teacherMap.put("Course Name", teacher.getSalary().getCourse().getName());
-		                }
-		            }
-
-		            return teacherMap;
-		        } ).collect(Collectors.toList());
-		  }
+		        if (teacher.getSalary().getCourse() != null) {
+		        	teacherMap.put("Course Id", teacher.getSalary().getCourse().getId());
+		            teacherMap.put("Course Name", teacher.getSalary().getCourse().getName());
+		            
+		            List<Student> students = studentRepository.findByCourseId(teacher.getSalary().getCourse().getId());
+                    
+		            
+                    if (!students.isEmpty()) {
+                        List<Long> studentIds = students.stream()
+                                                        .map(Student::getId)
+                                                        .collect(Collectors.toList());
+                        List<String> studentName = students.stream()
+                                .map(Student::getName)
+                                .collect(Collectors.toList());
+                        teacherMap.put("Student IDs", studentIds);
+                        teacherMap.put("Stduent Name", studentName);
+                    }
+		        }
+		    }
+		    if(teacher.getSchool().getId() != null) {
+		    	teacherMap.put("School id", teacher.getSchool().getId());
+		    	teacherMap.put("School Name", teacher.getSchool().getName());
+		    }
+		    
+		
+	
+		    return teacherMap;
+		  	} ).collect(Collectors.toList());
+}
 	
 		
 		

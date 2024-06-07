@@ -37,14 +37,20 @@ public class QuestionService {
 		List<QuestionDTO> resList = new LinkedList<>();
 		for(Question quiz:data)
 		{
-			QuestionDTO temp = new QuestionDTO();
-			temp.setId(quiz.getId());
-			temp.setQuestion(quiz.getQuiz());
-			resList.add(temp);
+//			QuestionDTO temp = new QuestionDTO();
+//			temp.setId(quiz.getId());
+//			temp.setQuestion(quiz.getQuiz());
+//			resList.add(temp);
+			resList.add(QuestionDTO.builder().id(quiz.getId())
+			.Question(quiz.getQuiz()).answer(quiz.getAnswer()).build());
 		}
 //		return this.studentRepository.findAll();
 		return resList;
 	}
+	
+	
+	
+	
 	
 	
 	

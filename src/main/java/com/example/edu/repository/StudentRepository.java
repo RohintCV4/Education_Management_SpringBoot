@@ -16,7 +16,9 @@ public interface StudentRepository extends JpaRepository<Student, Long>{
 //	@Query("SELECT u FROM User ")
 //	List<Student> findAll();
 
-	Student findByCourseId(Long stuId);
+	//Student findByCourseId(Long stuId);
+    List<Student> findByCourseId(Long courseId);
+
 	
 //	@Query("SELECT u FROM User u WHERE u.status = 1")
 //	Collection<User> findAllActiveUsers();
