@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.edu.dto.ResponseDto;
@@ -22,9 +23,8 @@ public class StudentService {
 		return this.studentRepository.save(student);
 	}
 	
-	public Optional<Student> retrieveStudent(Long id){
-//		return this.studentRepository.findAll();
-		return this.studentRepository.findById(id);
+	public List<Student> retrieveStudent(String dem,Sort.Direction direction){
+		return this.studentRepository.findAll(Sort.by(direction,dem));
 	}
 	
 //	public List<ResponseDto> retrieveStudent(){

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.edu.entity.School;
 import com.example.edu.service.SchoolService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/v1")
@@ -42,6 +44,13 @@ public class SchoolController {
 	public Map<String,Object> updateSchool(@PathVariable Long id,@RequestBody School school){
 		
 		return schoolService.updateSchool(id,school);
+	}
+	
+	
+	//API
+	@GetMapping("https://reqres.in/api/users?page=2")
+	public String getMethodName(@RequestParam String param) {
+		return new String();
 	}
 	
 
