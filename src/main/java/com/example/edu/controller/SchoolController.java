@@ -2,6 +2,7 @@ package com.example.edu.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,9 +33,9 @@ public class SchoolController {
 		return schoolService.deleteSchool(id);
 	}
 	
-	@GetMapping("/")
-	public List<School> retrieveSchool() {
-		return this.schoolService.retrieveSchool();
+	@GetMapping("/{id}")
+	public Map<String,Object> retrieveSchool(@PathVariable Long id) {
+		return this.schoolService.retrieveSchool(id);
 	}
 	
 	@PutMapping("/{id}")
