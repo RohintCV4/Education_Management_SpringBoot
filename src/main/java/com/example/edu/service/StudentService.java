@@ -42,6 +42,11 @@ public class StudentService {
 //		return resList;
 //	}
 	
+	
+	public List<Student> searchStudent(String name,Long id, String address, Long courseId,Long schoolId){ 
+	        return studentRepository.searchStudents(id, name, address, courseId, schoolId);
+	}
+	
 	public Map<String,Object> deleteStudent(Long id){
 		boolean exists = studentRepository.existsById(id);
 		Map<String,Object> response=new HashMap<>();

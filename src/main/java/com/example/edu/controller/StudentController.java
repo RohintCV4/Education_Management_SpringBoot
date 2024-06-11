@@ -57,6 +57,16 @@ public class StudentController {
 //		return this.studentService.retrieveStudent();
 //	}
 	
+	
+	@GetMapping("/search/")
+	public List<Student> searchStudent(@RequestParam(required = false) Long id,
+									   @RequestParam(required = false) String name,
+									   @RequestParam(required = false) String address,
+									   @RequestParam(required = false) Long courseId,
+									   @RequestParam(required = false) Long schoolId){
+		return studentService.searchStudent(name, id, address, courseId,schoolId);
+	}
+	
 	@DeleteMapping("/{id}")
 	public Map<String,Object> deleteStudent (@PathVariable Long id){
 		return studentService.deleteStudent(id);
