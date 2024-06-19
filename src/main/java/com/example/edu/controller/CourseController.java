@@ -1,6 +1,5 @@
 package com.example.edu.controller;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,7 +34,7 @@ public class CourseController {
 	}
 	
 	@GetMapping("/{id}")
-	public Optional<Course> retrieveSchool(@PathVariable Long id) {
+	public Optional<Course> retrieveCourse(@PathVariable Long id) {
 		return this.courseService.retrieveCourse(id);
 	}
 	

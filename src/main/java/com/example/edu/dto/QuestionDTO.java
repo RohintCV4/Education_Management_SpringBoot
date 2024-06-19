@@ -1,10 +1,5 @@
 package com.example.edu.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
 @Data
