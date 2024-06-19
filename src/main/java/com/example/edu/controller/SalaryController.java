@@ -1,6 +1,5 @@
 package com.example.edu.controller;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,27 +23,27 @@ import com.example.edu.service.SalaryService;
 public class SalaryController {
 	@Autowired
 	private SalaryService salaryService;
-	
+
 	@PostMapping("/")
 	public Salary createSalary(@RequestBody Salary salary) {
 		return this.salaryService.createSalary(salary);
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public Map<String,Object> removeSalary(@PathVariable Long id){
-		
+	public Map<String, Object> removeSalary(@PathVariable Long id) {
+
 		return salaryService.deleteSalary(id);
 	}
-	
+
 	@GetMapping("/{id}")
 	public Optional<Salary> retrieveSalary(@PathVariable Long id) {
 		return this.salaryService.retrieveSalary(id);
 	}
-	
+
 	@PutMapping("/{id}")
-	public Map<String,Object> updateSalary(@PathVariable Long id,@RequestBody Salary salary){
-		
-		return salaryService.updateSalary(id,salary);
+	public Map<String, Object> updateSalary(@PathVariable Long id, @RequestBody Salary salary) {
+
+		return salaryService.updateSalary(id, salary);
 	}
-	
+
 }

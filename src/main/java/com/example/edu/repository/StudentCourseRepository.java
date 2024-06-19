@@ -7,12 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.example.edu.entity.Course;
 import com.example.edu.entity.StudentCourse;
-import com.example.edu.entity.SubjectCourse;
 
 @Repository
-public interface StudentCourseRepository extends JpaRepository<StudentCourse, Long>{
+public interface StudentCourseRepository extends JpaRepository<StudentCourse, Long> {
 
-	//List<StudentCourse> findByStudentIdAndSubjectCourseId(Long id, Long id2);
+	// List<StudentCourse> findByStudentIdAndSubjectCourseId(Long id, Long id2);
 
 	List<StudentCourse> findByStudentIdAndCourseId(Long id, Course Course);
 

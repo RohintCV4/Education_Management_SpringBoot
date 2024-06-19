@@ -9,32 +9,32 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Question")
+@Table(name = "Question")
 public class Question {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@Column(name="quiz")
+
+	@Column(name = "quiz")
 	private String quiz;
-	
-	@Column(name="answer")
+
+	@Column(name = "answer")
 	private String answer;
-	
+
 	@ManyToOne
 	private Course course;
-	
+
 	@ManyToOne
 	private SubjectCourse subjectCourse;
-	
-	
-	public Question() {}
-	
-	public Question(Long id, String quiz,String answer) {
-		this.id=id;
-		this.quiz=quiz;
-		this.answer=answer;
+
+	public Question() {
+	}
+
+	public Question(Long id, String quiz, String answer) {
+		this.id = id;
+		this.quiz = quiz;
+		this.answer = answer;
 	}
 
 	public Long getId() {
@@ -67,7 +67,7 @@ public class Question {
 
 	public void setCourse(Course course) {
 		this.course = course;
-		
+
 	}
 
 	public SubjectCourse getSubjectCourse() {
@@ -77,7 +77,5 @@ public class Question {
 	public void setSubjectCourse(SubjectCourse subjectCourse) {
 		this.subjectCourse = subjectCourse;
 	}
-	
-	
-	
+
 }

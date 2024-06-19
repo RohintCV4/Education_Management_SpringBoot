@@ -6,33 +6,30 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="salary")
+@Table(name = "salary")
 public class Salary {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	
-	@Column (name="amount")
+	@Column(name = "amount")
 	private Long amount;
-	
+
 	@ManyToOne
 	private Course course;
-	
-	public Salary() {}
-	
-	public Salary(Long id,Long amount) {
-		this.id=id;
-		this.amount=amount;
-		
+
+	public Salary() {
 	}
 
-	
+	public Salary(Long id, Long amount) {
+		this.id = id;
+		this.amount = amount;
+
+	}
 
 	public Course getCourse() {
 		return course;

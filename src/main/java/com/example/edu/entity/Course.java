@@ -2,34 +2,32 @@ package com.example.edu.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="course")
+@Table(name = "course")
 public class Course {
 	@Id
 	private Long id;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
-	@Column(name="fees")
+
+	@Column(name = "fees")
 	private Long fees;
-	
+
 	@ManyToOne
-	private School school ;
-	
-	public Course() {}
-	
-	public Course (Long id,String name, Long fees) {
-		this.id=id;
-		this.name=name;
-		this.fees=fees;
+	private School school;
+
+	public Course() {
+	}
+
+	public Course(Long id, String name, Long fees) {
+		this.id = id;
+		this.name = name;
+		this.fees = fees;
 	}
 
 	public Long getId() {
@@ -63,7 +61,6 @@ public class Course {
 	public void setSchool(School school) {
 		this.school = school;
 	}
-	
 
 //	public Student getStudent() {
 //		return student;
@@ -72,8 +69,5 @@ public class Course {
 //	public void setStudent(Student student) {
 //		this.student = student;
 //	}
-	
-	
-	
 
 }

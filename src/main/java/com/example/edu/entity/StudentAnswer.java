@@ -6,34 +6,33 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="student_answer")
+@Table(name = "student_answer")
 public class StudentAnswer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@Column(name="answer")
+
+	@Column(name = "answer")
 	private String answer;
-	
+
 	@ManyToOne
 	private Question question;
-	
+
 	@ManyToOne
 	private Student student;
-	
+
 	@ManyToOne
 	private SubjectCourse subjectCourse;
-	
-	public StudentAnswer() {}
-	
-	public StudentAnswer(Long id,String answer) {
-		this.id=id;
-		this.answer=answer;
+
+	public StudentAnswer() {
+	}
+
+	public StudentAnswer(Long id, String answer) {
+		this.id = id;
+		this.answer = answer;
 	}
 
 	public Long getId() {
@@ -75,6 +74,5 @@ public class StudentAnswer {
 	public void setSubjectCourse(SubjectCourse subjectCourse) {
 		this.subjectCourse = subjectCourse;
 	}
-	
-	
+
 }

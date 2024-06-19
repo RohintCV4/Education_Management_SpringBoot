@@ -1,6 +1,6 @@
 package com.example.edu.controller;
 
-import java.util.List;
+//import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.edu.entity.Student;
 import com.example.edu.entity.StudentCourse;
 import com.example.edu.service.StudentCourseService;
-import com.example.edu.service.StudentService;
 
 @RestController
 @RequestMapping("/studentcourse/v1")
