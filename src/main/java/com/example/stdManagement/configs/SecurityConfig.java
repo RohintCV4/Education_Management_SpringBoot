@@ -113,9 +113,9 @@ public class SecurityConfig {
             .csrf(csrf ->csrf.disable())
             .authorizeHttpRequests(request -> request              
                     .requestMatchers("/api/v1/auth/**").permitAll()
-                    .requestMatchers("/admin/v1/**").hasAnyAuthority("ADMIN", "TEACHER", "STUDENT")
-                    .requestMatchers("/student/v1/**").hasAnyAuthority("STUDENT")
-                    .requestMatchers("/api/v1/teacher/**").hasAnyAuthority("TEACHER", "STUDENT")
+                    .requestMatchers("/admin/v1/**").hasAnyAuthority("ADMIN", "TEACHER")
+                    .requestMatchers("/student/v1/**").hasAnyAuthority("STUDENT", "TEACHER")
+                    .requestMatchers("/api/v1/teacher/**").hasAnyAuthority("TEACHER")
                     .requestMatchers("/question/v1/**").permitAll()
                     .requestMatchers("/school/v1/**").permitAll()
                     .requestMatchers("/course/v1/**").permitAll()

@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.example.educ.entity.School;
 import com.example.stdManagement.entity.Admin;
-import com.example.stdManagement.entity.School;
 import com.example.stdManagement.entity.Student;
 import com.example.stdManagement.entity.Teacher;
 

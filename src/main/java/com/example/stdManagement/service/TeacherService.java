@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import com.example.stdManagement.dto.TeacherDTO;
 import com.example.stdManagement.entity.Student;
 import com.example.stdManagement.entity.Teacher;
-import com.example.stdManagement.repository.SalaryRepository;
 import com.example.stdManagement.repository.StudentRepository;
 import com.example.stdManagement.repository.TeacherRepository;
 
@@ -28,8 +27,7 @@ public class TeacherService {
 
 	@Autowired
 	private TeacherRepository teacherRepository;
-	@Autowired
-	private SalaryRepository salaryRepository;
+
 	@Autowired
 	private StudentRepository studentRepository;
 	
@@ -74,11 +72,14 @@ public class TeacherService {
 	        teacherResponse.setAddress(teacherRequest.getAddress());
 	    }
 	    
-	    if (teacherRequest.getSalary() != null && teacherRequest.getSalary().getId() != null) {
+	    if (teacherRequest.getSalary() != null && teacherRequest.getSalary() != null) {
 	        teacherResponse.setSalary(teacherRequest.getSalary());
 	    }
 	    if (teacherRequest.getStatus() != null) {
 	        teacherResponse.setStatus(teacherRequest.getStatus());
+	    }
+	    if (teacherRequest.getCourse() != null && teacherRequest.getCourse().getId() != null) {
+	        teacherResponse.setCourse(teacherRequest.getCourse());
 	    }
 	    if (teacherRequest.getSchool() != null && teacherRequest.getSchool().getId() != null) {
 	        teacherResponse.setSchool(teacherRequest.getSchool());
@@ -111,15 +112,12 @@ public class TeacherService {
 			teacherMap.put("Teacher Id", teacher.getId());
 			teacherMap.put("Teacher Name", teacher.getName());
 
-			if (teacher.getSalary() != null) {
-				teacherMap.put("Salary Id", teacher.getSalary().getId());
-				teacherMap.put("Salary Amount", teacher.getSalary().getAmount());
 
-				if (teacher.getSalary().getCourse() != null) {
-					teacherMap.put("Course Id", teacher.getSalary().getCourse().getId());
-					teacherMap.put("Course Name", teacher.getSalary().getCourse().getName());
+				if (teacher.getCourse() != null) {
+					teacherMap.put("Course Id", teacher.getCourse().getId());
+					teacherMap.put("Course Name", teacher.getCourse().getName());
 
-					List<Student> students = studentRepository.findByCourseId(teacher.getSalary().getCourse().getId());
+					List<Student> students = studentRepository.findByCourseId(teacher.getCourse().getId());
 
 					if (!students.isEmpty()) {
 						List<Long> studentIds = students.stream().map(Student::getId).collect(Collectors.toList());
@@ -128,7 +126,7 @@ public class TeacherService {
 						teacherMap.put("Stduent Name", studentName);
 					}
 				}
-			}
+			
 			if (teacher.getSchool().getId() != null) {
 				teacherMap.put("School id", teacher.getSchool().getId());
 				teacherMap.put("School Name", teacher.getSchool().getName());
@@ -161,35 +159,37 @@ public class TeacherService {
 	}
 	
 	
-	public List<TeacherDTO> getTeachers(String search, Integer page, Integer size, String sortField, String sortDirection) {
-	    Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-	    Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 3, sort);
+	
 
-	    try {
-	        Page<Object[]> teacherPage = teacherRepository.searchTeachers(search, pageable);
-	        List<TeacherDTO> teacherDTOs = new ArrayList<>();
-	        for (Object[] objects : teacherPage) {
-	            Teacher teacher = (Teacher) objects[0]; // Extract Teacher entity
-	            String schoolName = (String) objects[1]; // Extract school name
-	            Long salaryAmount = (Long) objects[2]; // Extract salary amount
-	            String courseName = (String) objects[3]; // Extract course name
+    public List<TeacherDTO> getTeacher(String search, Integer page, Integer size, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 10, sort);
 
-	            TeacherDTO dto = new TeacherDTO();
-	            dto.setName(teacher.getName());
-	            dto.setEmail(teacher.getEmail());
-	            dto.setSalary(salaryAmount);
-	            dto.setAddress(teacher.getAddress());
-	            dto.setSchoolName(schoolName);
-	            dto.setCourse(courseName);
+        try {
+            Page<Object[]> teacherPage = teacherRepository.searchTeachers(search, pageable);
+            List<TeacherDTO> teacherDTOs = new ArrayList<>();
+            for (Object[] objects : teacherPage) {
+                Teacher teacher = (Teacher) objects[0]; // Extract Teacher entity
+                String schoolName = (String) objects[1]; // Extract school name
+                String courseName = (String) objects[2]; // Extract course name
 
-	            teacherDTOs.add(dto);
-	        }
-	        return teacherDTOs;
-	    } catch (Exception e) {
-	        e.printStackTrace(); // Log the exception details
-	        return Collections.emptyList(); // Return an empty list or handle the exception as needed
-	    }
-	}
+                TeacherDTO dto = new TeacherDTO();
+                dto.setName(teacher.getName());
+                dto.setEmail(teacher.getEmail());
+                dto.setSalary(teacher.getSalary());
+                dto.setAddress(teacher.getAddress());
+                dto.setSchoolName(schoolName);
+                dto.setCourseName(courseName);
+
+                teacherDTOs.add(dto);
+            }
+            return teacherDTOs;
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception details
+            return Collections.emptyList(); // Return an empty list or handle the exception as needed
+        }
+    }
+
 
 	
 	

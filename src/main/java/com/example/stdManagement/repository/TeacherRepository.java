@@ -15,18 +15,26 @@ import com.example.stdManagement.entity.Teacher;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
 	
-	@Query("SELECT t, s.name, sal.amount, c.name FROM Teacher t " +
-		       "LEFT JOIN t.school s " +
-		       "LEFT JOIN t.salary sal " +
-		       "LEFT JOIN sal.course c " +
-		       "WHERE (:search IS NULL OR t.name LIKE %:search%) OR " +
-		       "(:search IS NULL OR t.address LIKE %:search%) OR " +
-		       "(:search IS NULL OR t.email LIKE %:search%) OR " +
-		       "(:search IS NULL OR s.name LIKE %:search%) OR " +
-
-		       "(:search IS NULL OR c.name LIKE %:search%)")
-		Page<Object[]> searchTeachers(@Param("search") String search, Pageable pageable);
-
+	@Query("SELECT t, s.name, c.name FROM Teacher t " +
+	           "LEFT JOIN t.school s " +
+	           "LEFT JOIN t.course c " +
+	           "WHERE (:search IS NULL OR t.name LIKE %:search%) OR " +
+	           "(:search IS NULL OR t.address LIKE %:search%) OR " +
+	           "(:search IS NULL OR t.email LIKE %:search%) OR " +
+	           "(:search IS NULL OR s.name LIKE %:search%) OR " +
+	           "(:search IS NULL OR c.name LIKE %:search%)")
+	    Page<Object[]> searchTeachers(@Param("search") String search, Pageable pageable);
+	    
+	    
+//	    @Query("SELECT t, s.name, c.name FROM Teacher t " +
+//			       "LEFT JOIN t.school s " +
+//			       "LEFT JOIN t.course c" +
+//			       "WHERE (:search IS NULL OR t.name LIKE %:search%) OR " +
+//			       "(:search IS NULL OR t.address LIKE %:search%) OR " +
+//			       "(:search IS NULL OR t.email LIKE %:search%) OR " +
+//			       "(:search IS NULL OR s.name LIKE %:search%) OR " +
+//
+//			       "(:search IS NULL OR c.name LIKE %:search%)")
 	
 //	@Query("SELECT t FROM Teacher t WHERE t.name LIKE %:name%")
 //    Page<Teacher> searchTeachers(@Param("name") String name, Pageable pageable);

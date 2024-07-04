@@ -48,11 +48,14 @@ public class Teacher implements UserDetails {
 		@Column
 		private String status;
 
-		@ManyToOne
-		public Salary salary;
+		
+		public Long salary;
 
 		@ManyToOne
 		public School school;
+		
+		@ManyToOne
+		public Course course;
 
 
 	    @Column(nullable = false)
