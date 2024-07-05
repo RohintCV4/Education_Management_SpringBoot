@@ -1,6 +1,7 @@
 package com.example.stdManagement.service;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,8 +16,8 @@ import com.example.stdManagement.dto.SignUpRequest;
 import com.example.stdManagement.entity.Admin;
 import com.example.stdManagement.entity.Student;
 import com.example.stdManagement.entity.Teacher;
-import com.example.stdManagement.exceptions.InvalidPasswordException;
-import com.example.stdManagement.exceptions.InvalidUsernameException;
+import com.example.stdManagement.exceptions.CustomException;
+import com.example.stdManagement.exceptions.CustomException.ErrorType;
 import com.example.stdManagement.repository.AdminRepository;
 import com.example.stdManagement.repository.SchoolRepository;
 import com.example.stdManagement.repository.StudentRepository;
@@ -38,6 +39,20 @@ public class AuthenticationService {
     private final JWTService jwtService;
 
     public Student studentSignUp(SignUpRequest signUpRequest) {
+    	
+    	if(!(emailValidation(signUpRequest.getEmail()))) {
+			throw new CustomException("email is not format",ErrorType.INVALID_EMAIL);
+		}
+		if(!(passwordValidation(signUpRequest.getPassword()))){
+			throw new CustomException("password is not valid",ErrorType.INVALID_PASSWORD);
+		}
+		
+        if (adminRepository.existsByEmail(signUpRequest.getEmail()) || teacherRepository.existsByEmail(signUpRequest.getEmail()) || studentRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new CustomException("Email already exists", ErrorType.EMAIL_ALREADY_REGISTERED);
+        }
+        
+        
+
         Student user = new Student();
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
@@ -47,6 +62,18 @@ public class AuthenticationService {
     }
 
     public Teacher teacherSignUp(SignUpRequest signUpRequest) {
+    	
+    	if(!(emailValidation(signUpRequest.getEmail()))) {
+			throw new CustomException("email is not format",ErrorType.INVALID_EMAIL);
+		}
+		if(!(passwordValidation(signUpRequest.getPassword()))){
+			throw new CustomException("password is not valid",ErrorType.INVALID_PASSWORD);
+		}
+    	
+        if (adminRepository.existsByEmail(signUpRequest.getEmail()) || teacherRepository.existsByEmail(signUpRequest.getEmail()) || studentRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new CustomException("Email already exists", ErrorType.EMAIL_ALREADY_REGISTERED);
+        }
+
         Teacher user = new Teacher();
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
@@ -56,6 +83,18 @@ public class AuthenticationService {
     }
 
     public Admin adminSignUp(SignUpRequest signUpRequest) {
+    	
+    	if(!(emailValidation(signUpRequest.getEmail()))) {
+			throw new CustomException("email is not correct format",ErrorType.INVALID_EMAIL);
+		}
+		if(!(passwordValidation(signUpRequest.getPassword()))){
+			throw new CustomException("password is not valid",ErrorType.INVALID_PASSWORD);
+		}
+    	
+        if (adminRepository.existsByEmail(signUpRequest.getEmail()) || teacherRepository.existsByEmail(signUpRequest.getEmail()) || studentRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new CustomException("Email already exists", ErrorType.EMAIL_ALREADY_REGISTERED);
+        }
+
         Admin user = new Admin();
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
@@ -63,8 +102,6 @@ public class AuthenticationService {
         user.setRole(Role.ADMIN);
         return adminRepository.save(user);
     }
-
-    
 
     public JwtAuthenticationResponse signIn(SignInRequest request) {
         Object user = findUserByEmail(request.getEmail());
@@ -74,7 +111,7 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
         } catch (AuthenticationException e) {
-            throw new InvalidPasswordException("Invalid password");
+            throw new CustomException("Invalid password", ErrorType.INVALID_PASSWORD);
         }
 
         String jwt = jwtService.generateToken(user);
@@ -104,15 +141,26 @@ public class AuthenticationService {
 
     private Object findUserByEmail(String email) {
         if (studentRepository.existsByEmail(email)) {
-            return studentRepository.findByEmail(email).orElseThrow(() -> new InvalidUsernameException("Invalid email"));
+            return studentRepository.findByEmail(email).orElseThrow(() -> new CustomException("Invalid email", ErrorType.INVALID_EMAIL));
         } else if (teacherRepository.existsByEmail(email)) {
-            return teacherRepository.findByEmail(email).orElseThrow(() -> new InvalidUsernameException("Invalid email"));
+            return teacherRepository.findByEmail(email).orElseThrow(() -> new CustomException("Invalid email", ErrorType.INVALID_EMAIL));
         } else if (adminRepository.existsByEmail(email)) {
-            return adminRepository.findByEmail(email).orElseThrow(() -> new InvalidUsernameException("Invalid email"));
+            return adminRepository.findByEmail(email).orElseThrow(() -> new CustomException("Invalid email", ErrorType.INVALID_EMAIL));
         } else if (schoolRepository.existsByEmail(email)) {
-            return schoolRepository.findByEmail(email).orElseThrow(() -> new InvalidUsernameException("Invalid email"));
+            return schoolRepository.findByEmail(email).orElseThrow(() -> new CustomException("Invalid email", ErrorType.INVALID_EMAIL));
         } else {
-            throw new InvalidUsernameException("Invalid email");
+            throw new CustomException("Invalid email", ErrorType.INVALID_EMAIL);
         }
     }
+    
+    public boolean emailValidation(String email) {
+		return Pattern.compile("^[a-z0-9+_.-]+@(gmail|yahoo|outlook|zoho)\\.com$").matcher(email).matches();
+	}
+	private boolean passwordValidation(String password) {
+		String pass = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=])"
+                + "(?=\\S+$).{8,20}$";
+		return Pattern.compile(pass).matcher(password).matches();
+	}
 }

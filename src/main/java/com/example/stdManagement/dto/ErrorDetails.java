@@ -1,4 +1,4 @@
-package com.example.stdManagement.exceptions;
+package com.example.stdManagement.dto;
 
 
 

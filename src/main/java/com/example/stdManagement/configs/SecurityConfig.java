@@ -91,6 +91,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+	
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
 
@@ -114,12 +115,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request              
                     .requestMatchers("/api/v1/auth/**").permitAll()
                     .requestMatchers("/admin/v1/**").hasAnyAuthority("ADMIN", "TEACHER")
-                    .requestMatchers("/student/v1/**").hasAnyAuthority("STUDENT", "TEACHER")
+                    .requestMatchers("/student/v1/**").hasAnyAuthority("ROLE_STUDENT", "TEACHER","ADMIN")
                     .requestMatchers("/api/v1/teacher/**").hasAnyAuthority("TEACHER")
                     .requestMatchers("/question/v1/**").permitAll()
                     .requestMatchers("/school/v1/**").permitAll()
-                    .requestMatchers("/course/v1/**").permitAll()
-                    .requestMatchers("/salary/v1/**").permitAll()
+//                    .requestMatchers("/course/v1/**").permitAll()
                     .requestMatchers("/subject-course/v1/**").permitAll()
                     .requestMatchers("/student-answer/v1/**").permitAll()
                     .requestMatchers("/mark/v1/**").permitAll()
